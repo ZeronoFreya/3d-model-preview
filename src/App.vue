@@ -1,28 +1,41 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app">
+        <view-layer 
+            @on-load="onLoad"></view-layer>
+        <MenuIndex></MenuIndex>
+        <div class="loading" v-show="loading"></div>
+    </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import ViewLayer from "./components/view-layer";
+import MenuIndex from "./components/menu-index";
 
 export default {
-  name: "app",
-  components: {
-    HelloWorld
-  }
+    name: "app",
+    data() {
+        return {
+            loading: false
+        };
+    },
+    methods: {
+        onLoad() {
+            // this.$store.commit('toggleLoading');
+        }
+    },
+    components: {
+        MenuIndex,
+        ViewLayer
+    }
 };
 </script>
 
 <style lang="scss">
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    /* background-image: linear-gradient(#7d8fa3, #1b1c1e); */
+    background-color: #1b1c1e;
 }
 </style>
