@@ -8,56 +8,56 @@
 <script>
 import { toggleFullscreen } from "../utils/fullScreen";
 // import { mapMutations } from 'vuex';
-import bus from "@/event-bus"
+import Bus from "@/event-bus";
 export default {
-  data() {
-    return {
-      btns: [
-        {
-          text: "Full Screen",
-          action: this.fullScreen
+    data() {
+        return {
+            btns: [
+                {
+                    text: "Full Screen",
+                    action: this.fullScreen
+                },
+                {
+                    text: "Auto Rotate",
+                    action: this.autoRotate
+                },
+                {
+                    text: "Rotate Y",
+                    action: this.switchCtrl
+                }
+            ]
+        };
+    },
+    methods: {
+        runAction(act) {
+            act();
+            this.$emit("closeMenu");
         },
-        {
-          text: "Auto Rotate",
-          action: this.autoRotate
+        fullScreen() {
+            toggleFullscreen();
         },
-        {
-          text: "Rotate Y",
-          action: this.switchCtrl
+        autoRotate() {
+            console.log("autoRotate");
         },
-      ]
+        switchCtrl() {
+            Bus.$emit("switchCtrl");
+        }
+        // this.$store.commit('switchCtrl')
+        // ...mapMutations([
+        //   'switchCtrl'
+        // ])
     }
-  },
-  methods: {
-    runAction(act){
-        act();
-        this.$emit('closeMenu');
-    },
-    fullScreen() {
-      toggleFullscreen();
-    },
-    autoRotate() {
-      console.log("autoRotate");
-    },
-    switchCtrl(){
-      bus.$emit('switchCtrl')
-    }
-    // this.$store.commit('switchCtrl')
-    // ...mapMutations([
-    //   'switchCtrl'
-    // ])
-  }
 };
 </script>
 <style lang="scss" scoped>
-.contain{
+.contain {
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
     height: auto;
 }
-.status-btn{
+.status-btn {
     // width: 100px;
     height: 60px;
     color: white;

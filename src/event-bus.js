@@ -1,7 +1,7 @@
 import Vue from "vue";
 import { Vector3 } from "three";
 
-const bus = new Vue({
+export default new Vue({
     data() {
         return {
             loading: true,
@@ -45,5 +45,3 @@ const bus = new Vue({
         });
     }
 });
-
-export { bus };

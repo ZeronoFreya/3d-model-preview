@@ -3,8 +3,8 @@ import { Vector2 } from "three";
 // import { getSize, getCenter } from "./util";
 import { TrackballControls } from "./controls/TrackballControls";
 
-import bus from "@/event-bus";
-console.log(1,bus);
+import Bus from "@/event-bus";
+console.log(1,Bus.control);
 
 export default {
     props: {
@@ -23,13 +23,13 @@ export default {
     },
     computed: {
         ctrlType() {
-            return bus.control;
+            return Bus.control;
         }
     },
     watch: {
-        // ctrlType() {
-        //     this.updateCtrlType();
-        // },
+        ctrlType() {
+            this.updateCtrlType();
+        },
         controllable() {
             this.updateControls();
         }
