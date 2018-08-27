@@ -1,4 +1,4 @@
-# 3d-mode-preview
+# 3d-model-preview
 
 ## Project setup
 ```
