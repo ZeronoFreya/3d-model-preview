@@ -1,32 +1,27 @@
-import {
-	GLNode
-} from "./GLNode";
-
 /**
  * @author sunag / http://www.sunag.com.br/
  */
 
-const RawNode = function ( value ) {
+import { Node } from '../../core/Node.js';
 
-	GLNode.call( this, 'v4' );
+function RawNode( value ) {
+
+	Node.call( this, 'v4' );
 
 	this.value = value;
 
-};
+}
 
-RawNode.prototype = Object.create( GLNode.prototype );
+RawNode.prototype = Object.create( Node.prototype );
 RawNode.prototype.constructor = RawNode;
 RawNode.prototype.nodeType = "Raw";
 
 RawNode.prototype.generate = function ( builder ) {
 
-	var material = builder.material;
+	var data = this.value.parseAndBuildCode( builder, this.type ),
+		code = data.code + '\n';
 
-	var data = this.value.parseAndBuildCode( builder, this.type );
-
-	var code = data.code + '\n';
-
-	if ( builder.shader == 'vertex' ) {
+	if ( builder.isShader( 'vertex' ) ) {
 
 		code += 'gl_Position = ' + data.result + ';';
 
@@ -37,6 +32,14 @@ RawNode.prototype.generate = function ( builder ) {
 	}
 
 	return code;
+
+};
+
+RawNode.prototype.copy = function ( source ) {
+
+	Node.prototype.copy.call( this, source );
+
+	this.value = source.value;
 
 };
 
@@ -55,6 +58,5 @@ RawNode.prototype.toJSON = function ( meta ) {
 	return data;
 
 };
-export {
-	RawNode
-};
+
+export { RawNode };

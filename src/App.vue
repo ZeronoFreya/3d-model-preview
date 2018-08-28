@@ -14,13 +14,17 @@ import MenuIndex from "./components/menu-index";
 export default {
     name: "app",
     data() {
-        return {
-            loading: false
-        };
+        return {};
+    },
+    computed: {
+        loading() {
+            return this.$bus.loading;
+        }
     },
     methods: {
         onLoad() {
             // this.$store.commit('toggleLoading');
+            this.$bus.$emit('toggleLoading', false)
         }
     },
     components: {

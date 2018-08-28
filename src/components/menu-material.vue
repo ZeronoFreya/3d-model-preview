@@ -34,6 +34,7 @@ export default {
     methods: {
         switchMtl(action) {
             // this.$store.commit("setRME", action);
+            this.$bus.$emit('setRME', action)
             this.$emit("closeMenu");
         }
     }

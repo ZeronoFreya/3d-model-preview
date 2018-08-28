@@ -1,29 +1,57 @@
-import {
-	Color
-} from 'three';
-import {
-	InputNode
-} from "../InputNode";
-
-import {
-	NodeMaterial
-} from "../NodeMaterial";
-
+import { Color } from "three";
 /**
  * @author sunag / http://www.sunag.com.br/
  */
 
-const ColorNode = function (color) {
+import { InputNode } from '../core/InputNode.js';
+import { NodeUtils } from '../core/NodeUtils.js';
 
-	InputNode.call(this, 'c');
+function ColorNode( color, g, b ) {
 
-	this.value = new Color(color || 0);
+	InputNode.call( this, 'c' );
+
+	this.value = color instanceof Color ? color : new Color( color || 0, g, b );
+
+}
+
+ColorNode.prototype = Object.create( InputNode.prototype );
+ColorNode.prototype.constructor = ColorNode;
+ColorNode.prototype.nodeType = "Color";
+
+NodeUtils.addShortcuts( ColorNode.prototype, 'value', [ 'r', 'g', 'b' ] );
+
+ColorNode.prototype.generateReadonly = function ( builder, output, uuid, type, ns, needsUpdate ) {
+
+	return builder.format( "vec3( " + this.r + ", " + this.g + ", " + this.b + " )", type, output );
 
 };
 
-ColorNode.prototype = Object.create(InputNode.prototype);
-ColorNode.prototype.constructor = ColorNode;
+ColorNode.prototype.copy = function ( source ) {
 
-NodeMaterial.addShortcuts(ColorNode.prototype, 'value', ['r', 'g', 'b']);
+	InputNode.prototype.copy.call( this, source );
+
+	this.value.copy( source );
+
+};
+
+ColorNode.prototype.toJSON = function ( meta ) {
+
+	var data = this.getJSONNode( meta );
+
+	if ( ! data ) {
+
+		data = this.createJSONNode( meta );
+
+		data.r = this.r;
+		data.g = this.g;
+		data.b = this.b;
+
+		if ( this.readonly === true ) data.readonly = true;
+
+	}
+
+	return data;
+
+};
 
 export { ColorNode };

@@ -2,7 +2,7 @@
 // import { Mesh } from "three";
 import { OBJLoader } from "./loaders/OBJLoader";
 import { MTLLoader } from "./loaders/MTLLoader";
-import { toIndexed } from "./utils/model";
+import { toIndexed } from "utils/model";
 import mixin from "./model-mixin";
 import cameraPlugin from "./model-camera-plugin";
 import material from "./model-material";

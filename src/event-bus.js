@@ -1,7 +1,6 @@
 import Vue from "vue";
 import { Vector3 } from "three";
-
-export default new Vue({
+const Bus = new Vue({
     data() {
         return {
             loading: true,
@@ -17,7 +16,6 @@ export default new Vue({
         };
     },
     created() {
-        console.log(0, this.control);
         // 绑定监听
         this.$on("toggleLoading", status => {
             status = status === undefined ? !this.loading : status;
@@ -45,3 +43,5 @@ export default new Vue({
         });
     }
 });
+Vue.prototype.$bus = Bus;
+// export default Bus;

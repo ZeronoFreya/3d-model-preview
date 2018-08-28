@@ -1,30 +1,51 @@
-import { InputNode } from "../InputNode";
 /**
  * @author sunag / http://www.sunag.com.br/
  */
 
-const FloatNode = function (value) {
+import { InputNode } from '../core/InputNode.js';
 
-	InputNode.call( this, 'fv1' );
+function FloatNode( value ) {
 
-	this.value = [ value || 0 ];
+	InputNode.call( this, 'f' );
 
-};
+	this.value = value || 0;
+
+}
 
 FloatNode.prototype = Object.create( InputNode.prototype );
 FloatNode.prototype.constructor = FloatNode;
+FloatNode.prototype.nodeType = "Float";
 
-Object.defineProperties( FloatNode.prototype, {
-	number: {
-		get: function() {
-			return this.value[ 0 ];
-		},
-		set: function( val ) {
-			this.value[ 0 ] = val;
-		}
-	}
-} );
+FloatNode.prototype.generateReadonly = function ( builder, output, uuid, type, ns, needsUpdate ) {
 
-export {
-	FloatNode
+	return builder.format( this.value + ( this.value % 1 ? '' : '.0' ), type, output );
+
 };
+
+FloatNode.prototype.copy = function ( source ) {
+
+	InputNode.prototype.copy.call( this, source );
+
+	this.value = source.value;
+
+};
+
+FloatNode.prototype.toJSON = function ( meta ) {
+
+	var data = this.getJSONNode( meta );
+
+	if ( ! data ) {
+
+		data = this.createJSONNode( meta );
+
+		data.value = this.value;
+
+		if ( this.readonly === true ) data.readonly = true;
+
+	}
+
+	return data;
+
+};
+
+export { FloatNode };

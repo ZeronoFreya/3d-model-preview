@@ -25,10 +25,10 @@ import {
     HemisphereLight,
     DirectionalLight
 } from "three";
-import { getSize, getCenter } from "./utils/model";
+import { getSize, getCenter } from "utils/model";
 // import { OrbitControls } from './controls/OrbitControls'
 // import { TrackballControls } from "./controls/TrackballControls.js";
-import { pathJoin } from "./utils/io";
+import { pathJoin } from "utils/io";
 
 const suportWebGL = (() => {
     try {

@@ -2,7 +2,7 @@
 import { Vector3 } from "three";
 import { wire } from "./material/wire";
 import { advToon } from "./material/adv-toon";
-// import { envmapsHdr } from "./material/envmaps-hdr";
+import { envmapsHdr } from "./material/envmaps-hdr";
 
 export default {
     data() {
@@ -10,7 +10,7 @@ export default {
     },
     computed: {
         rme() {
-            return null;
+            return this.$bus.rme;
         }
     },
     watch: {
@@ -24,18 +24,18 @@ export default {
         }
         this.funMap.set("wire", wire);
         this.funMap.set("advToon", advToon);
-        // this.funMap.set("envmapsHdr", envmapsHdr);
+        this.funMap.set("envmapsHdr", envmapsHdr);
     },
     methods: {
         setRME() {
-            this.$store.commit("toggleLoading", true);
+            this.$bus.$emit('toggleLoading', true)
             this.funMap.get(this.rme)({
                 objects: this.allObjects,
                 renderer: this.renderer,
                 updateLights: this.updateLights
             });
             this.render();
-            this.$store.commit("toggleLoading", false);
+            this.$bus.$emit('toggleLoading', false)
         }
     }
 };

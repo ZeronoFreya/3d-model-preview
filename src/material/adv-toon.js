@@ -1,11 +1,11 @@
 import { FloatNode } from "../nodes/inputs/FloatNode";
-import { LightNode } from "../nodes/accessors/LightNode";
 import { ColorNode } from "../nodes/inputs/ColorNode";
-import { LuminanceNode } from "../nodes/utils/LuminanceNode";
+import { LuminanceNode } from "../nodes/effects/LuminanceNode";
 import { OperatorNode } from "../nodes/math/OperatorNode";
 import { Math1Node } from "../nodes/math/Math1Node";
 import { Math2Node } from "../nodes/math/Math2Node";
 import { Math3Node } from "../nodes/math/Math3Node";
+import { LightNode } from "../nodes/accessors/LightNode";
 import { PositionNode } from "../nodes/accessors/PositionNode";
 import { NormalNode } from "../nodes/accessors/NormalNode";
 import { PhongNodeMaterial } from "../nodes/materials/PhongNodeMaterial";
@@ -14,7 +14,12 @@ import { setMaterial } from "./setMaterial";
 var material;
 
 function advToon(args) {
-    const { objects = null, renderer = null, updateLights = null, effect = null } = { ...args };
+    const {
+        objects = null,
+        renderer = null,
+        updateLights = null,
+        effect = null
+    } = { ...args };
     if (material === undefined) {
         let count = new FloatNode(2.8);
 

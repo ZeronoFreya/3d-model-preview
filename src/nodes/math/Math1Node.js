@@ -1,21 +1,18 @@
-import {
-	TempNode
-} from "../TempNode";
-
-
 /**
  * @author sunag / http://www.sunag.com.br/
  */
 
-const Math1Node = function( a, method ) {
+import { TempNode } from '../core/TempNode.js';
+
+function Math1Node( a, method ) {
 
 	TempNode.call( this );
 
 	this.a = a;
 
-	this.method = method || Math1Node.SIN;
+	this.method = method;
 
-};
+}
 
 Math1Node.RAD = 'radians';
 Math1Node.DEG = 'degrees';
@@ -44,44 +41,77 @@ Math1Node.INVERT = 'invert';
 
 Math1Node.prototype = Object.create( TempNode.prototype );
 Math1Node.prototype.constructor = Math1Node;
+Math1Node.prototype.nodeType = "Math1";
 
-Math1Node.prototype.getType = function( builder ) {
+Math1Node.prototype.getType = function ( builder ) {
 
 	switch ( this.method ) {
+
 		case Math1Node.LENGTH:
-			return 'fv1';
+
+			return 'f';
+
 	}
 
 	return this.a.getType( builder );
 
 };
 
-Math1Node.prototype.generate = function( builder, output ) {
+Math1Node.prototype.generate = function ( builder, output ) {
 
-	var material = builder.material;
-
-	var type = this.getType( builder );
-
-	var result = this.a.build( builder, type );
+	var type = this.getType( builder ),
+		result = this.a.build( builder, type );
 
 	switch ( this.method ) {
 
 		case Math1Node.NEGATE:
-			result = '(-' + result + ')';
+
+			result = '( -' + result + ' )';
+
 			break;
 
 		case Math1Node.INVERT:
-			result = '(1.0-' + result + ')';
+
+			result = '( 1.0 - ' + result + ' )';
+
 			break;
 
 		default:
-			result = this.method + '(' + result + ')';
+
+			result = this.method + '( ' + result + ' )';
+
 			break;
+
 	}
 
 	return builder.format( result, type, output );
 
 };
-export {
-	Math1Node
+
+Math1Node.prototype.copy = function ( source ) {
+
+	TempNode.prototype.copy.call( this, source );
+
+	this.a = source.a;
+	this.method = source.method;
+
 };
+
+Math1Node.prototype.toJSON = function ( meta ) {
+
+	var data = this.getJSONNode( meta );
+
+	if ( ! data ) {
+
+		data = this.createJSONNode( meta );
+
+		data.a = this.a.toJSON( meta ).uuid;
+		data.method = this.method;
+
+	}
+
+	return data;
+
+};
+
+export { Math1Node };

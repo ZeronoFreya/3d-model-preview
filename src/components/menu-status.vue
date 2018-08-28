@@ -6,9 +6,8 @@
     </div>
 </template>
 <script>
-import { toggleFullscreen } from "../utils/fullScreen";
-// import { mapMutations } from 'vuex';
-import Bus from "@/event-bus";
+import { toggleFullscreen } from "utils/fullScreen";
+
 export default {
     data() {
         return {
@@ -40,12 +39,8 @@ export default {
             console.log("autoRotate");
         },
         switchCtrl() {
-            Bus.$emit("switchCtrl");
+            this.$bus.$emit("switchCtrl");
         }
-        // this.$store.commit('switchCtrl')
-        // ...mapMutations([
-        //   'switchCtrl'
-        // ])
     }
 };
 </script>

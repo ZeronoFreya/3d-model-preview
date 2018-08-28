@@ -1,10 +1,12 @@
+import "@/event-bus";
+
 import Vue from "vue";
 import App from "./App.vue";
 
 import fastclick from "fastclick";
 
 
-import "./utils/rem";
+import "utils/rem";
 import "./css/base.scss";
 
 Vue.config.productionTip = false;
