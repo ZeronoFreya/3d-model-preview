@@ -71,7 +71,9 @@ export default {
             this.$el.addEventListener("mousemove", this.onMouseMove, false);
             this.$el.addEventListener("mouseup", this.onMouseUp, false);
 
-            this.$el.setCapture();
+            if (this.$el.setCapture) {
+                this.$el.setCapture();
+            }
         },
         onMouseMove(event) {
             event.preventDefault();
@@ -91,7 +93,7 @@ export default {
             this.$el.removeEventListener("mousemove", this.onMouseMove, false);
             this.$el.removeEventListener("mouseup", this.onMouseUp, false);
 
-            this.$el.releaseCapture();
+            // this.$el.releaseCapture();
         },
         mousewheel(event) {
             event.preventDefault();
