@@ -17,27 +17,27 @@ export default {
             mtls: [
                 {
                     text: "wire",
-                    action: "wire"
+                    action: "wire",
                 },
                 {
                     text: "advToon",
-                    action: "advToon"
+                    action: "advToon",
                 },
                 {
                     text: "envmapsHdr",
-                    action: "envmapsHdr"
-                }
-            ]
+                    action: "envmapsHdr",
+                },
+            ],
         };
     },
     created() {},
     methods: {
         switchMtl(action) {
             // this.$store.commit("setRME", action);
-            this.$bus.$emit('setRME', action)
+            this.$bus.$emit("setRME", action);
             this.$emit("closeMenu");
-        }
-    }
+        },
+    },
 };
 </script>
 <style lang="scss" scoped>
@@ -57,5 +57,3 @@ export default {
     overflow: hidden;
 }
 </style>
-
-

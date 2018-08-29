@@ -2,37 +2,35 @@
  * @author sunag / http://www.sunag.com.br/
  */
 
-import { PhongNode } from './nodes/PhongNode.js';
-import { NodeMaterial } from './NodeMaterial.js';
-import { NodeUtils } from '../core/NodeUtils.js';
+import { PhongNode } from "./nodes/PhongNode.js";
+import { NodeMaterial } from "./NodeMaterial.js";
+import { NodeUtils } from "../core/NodeUtils.js";
 
 function PhongNodeMaterial() {
+    var node = new PhongNode();
 
-	var node = new PhongNode();
+    NodeMaterial.call(this, node, node);
 
-	NodeMaterial.call( this, node, node );
-
-	this.type = "PhongNodeMaterial";
-
+    this.type = "PhongNodeMaterial";
 }
 
-PhongNodeMaterial.prototype = Object.create( NodeMaterial.prototype );
+PhongNodeMaterial.prototype = Object.create(NodeMaterial.prototype);
 PhongNodeMaterial.prototype.constructor = PhongNodeMaterial;
 
-NodeUtils.addShortcuts( PhongNodeMaterial.prototype, 'fragment', [
-	'color',
-	'alpha',
-	'specular',
-	'shininess',
-	'normal',
-	'emissive',
-	'ambient',
-	'light',
-	'shadow',
-	'ao',
-	'environment',
-	'environmentAlpha',
-	'position'
-] );
+NodeUtils.addShortcuts(PhongNodeMaterial.prototype, "fragment", [
+    "color",
+    "alpha",
+    "specular",
+    "shininess",
+    "normal",
+    "emissive",
+    "ambient",
+    "light",
+    "shadow",
+    "ao",
+    "environment",
+    "environmentAlpha",
+    "position",
+]);
 
 export { PhongNodeMaterial };

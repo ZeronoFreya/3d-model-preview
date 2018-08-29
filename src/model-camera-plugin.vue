@@ -15,7 +15,7 @@ export default {
         },
         rateApparentHorizon() {
             return 0.0;
-        }
+        },
     },
     watch: {
         facedPlane() {
@@ -25,7 +25,7 @@ export default {
         },
         rateApparentHorizon() {
             this.setRateApparentHorizon();
-        }
+        },
     },
     created: function() {
         if (this.funMap === undefined) {
@@ -49,21 +49,21 @@ export default {
             return {
                 lookat: new Vector3(0, this.apparentHorizon, 0),
                 pos: new Vector3(0, this.apparentHorizon, distance),
-                up: new Vector3(0, 1, 0)
+                up: new Vector3(0, 1, 0),
             };
         },
         top(distance) {
             return {
                 lookat: new Vector3(0, this.apparentHorizon, 0),
                 pos: new Vector3(0, distance, 0),
-                up: new Vector3(0, 0, -1)
+                up: new Vector3(0, 0, -1),
             };
         },
         right(distance) {
             return {
                 lookat: new Vector3(0, this.apparentHorizon, 0),
                 pos: new Vector3(-distance, this.apparentHorizon, 0),
-                up: new Vector3(0, 1, 0)
+                up: new Vector3(0, 1, 0),
             };
         },
         back() {
@@ -77,7 +77,7 @@ export default {
             return {
                 lookat: new Vector3(0, this.apparentHorizon, 0),
                 pos: new Vector3(x, y, z),
-                up: new Vector3(0, 1, 0)
+                up: new Vector3(0, 1, 0),
             };
         },
         threeView(target = this.wrapper) {
@@ -89,33 +89,33 @@ export default {
             let camera = facedPlane(distance);
             this.updateViewPoint(camera);
             this.render();
-            this.$store.commit('setFacedPlane');
+            this.$store.commit("setFacedPlane");
         },
         resetViewPoint() {
             this.camera.position.set(
                 this.cameraPosition.x,
                 this.cameraPosition.y,
-                this.cameraPosition.z
+                this.cameraPosition.z,
             );
             this.camera.rotation.set(
                 this.cameraRotation.x,
                 this.cameraRotation.y,
-                this.cameraRotation.z
+                this.cameraRotation.z,
             );
             this.camera.up.set(
                 this.cameraUp.x,
                 this.cameraUp.y,
-                this.cameraUp.z
+                this.cameraUp.z,
             );
 
             this.camera.lookAt(
                 new Vector3(
                     this.cameraLookAt.x,
                     this.cameraLookAt.y,
-                    this.cameraLookAt.z
-                )
+                    this.cameraLookAt.z,
+                ),
             );
-        }
-    }
+        },
+    },
 };
 </script>

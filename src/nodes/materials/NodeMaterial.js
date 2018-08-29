@@ -3,7 +3,7 @@ import {
     NormalBlending,
     FrontSide,
     NoColors,
-    LessEqualDepth
+    LessEqualDepth,
 } from "three";
 /**
  * @author sunag / http://www.sunag.com.br/
@@ -34,8 +34,8 @@ Object.defineProperties(NodeMaterial.prototype, {
     properties: {
         get: function() {
             return this.fragment.properties;
-        }
-    }
+        },
+    },
 });
 
 NodeMaterial.prototype.updateFrame = function(frame) {
@@ -100,7 +100,7 @@ NodeMaterial.prototype.toJSON = function(meta) {
 
     if (isRootObject) {
         meta = {
-            nodes: {}
+            nodes: {},
         };
     }
 

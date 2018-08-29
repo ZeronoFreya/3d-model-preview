@@ -1,6 +1,5 @@
 <template>
-    <li class="action_list"
-        :class="{'action_expanded': index === secActive}">
+    <li>
         <div class="toggle"
             @click.prevent.stop="toggleSecMenu()">
             <span class="action_name">{{name}}</span>
@@ -10,23 +9,15 @@
 </template>
 <script>
 export default {
-    props: ["secActive", "index", "name"],
+    props: ["index", "name"],
     methods: {
         toggleSecMenu() {
             this.$emit("toggleSecMenu", this.index);
-        }
-    }
+        },
+    },
 };
 </script>
 <style lang="scss" scoped>
-.action_list {
-    height: 80px;
-    line-height: 1.2;
-    text-align: center;
-    overflow: hidden;
-    font-size: 24px;
-    padding: 10px 0;
-}
 .action_name {
     position: relative;
 }

@@ -14,17 +14,17 @@ export default {
             btns: [
                 {
                     text: "Full Screen",
-                    action: this.fullScreen
+                    action: this.fullScreen,
                 },
                 {
                     text: "Auto Rotate",
-                    action: this.autoRotate
+                    action: this.autoRotate,
                 },
                 {
                     text: "Rotate Y",
-                    action: this.switchCtrl
-                }
-            ]
+                    action: this.switchCtrl,
+                },
+            ],
         };
     },
     methods: {
@@ -40,8 +40,8 @@ export default {
         },
         switchCtrl() {
             this.$bus.$emit("switchCtrl");
-        }
-    }
+        },
+    },
 };
 </script>
 <style lang="scss" scoped>
@@ -64,4 +64,3 @@ export default {
     overflow: hidden;
 }
 </style>
-

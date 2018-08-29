@@ -49,67 +49,65 @@
 export default {
     data() {
         return {
-            target:{ x: 0, y: 59, z: 0 }
-        }
+            target: { x: 0, y: 59, z: 0 },
+        };
     },
-    methods:{
-        toFront(){
+    methods: {
+        toFront() {
             // EventHub.$emit('tofront',null);
-            this.setFacedPlane('front');
-            this.$emit('closeMenu');
+            this.setFacedPlane("front");
+            this.$emit("closeMenu");
         },
-        toRight(){
-            this.setFacedPlane('right');
-            this.$emit('closeMenu');
+        toRight() {
+            this.setFacedPlane("right");
+            this.$emit("closeMenu");
         },
-        toTop(){
-            this.setFacedPlane('top');
-            this.$emit('closeMenu');
+        toTop() {
+            this.setFacedPlane("top");
+            this.$emit("closeMenu");
         },
-        toBack(){
-            this.setFacedPlane('back');
-            this.$emit('closeMenu');
+        toBack() {
+            this.setFacedPlane("back");
+            this.$emit("closeMenu");
         },
         // ...mapMutations([
         //     'setFacedPlane'
         // ])
-    }
-}
+    },
+};
 </script>
 
 <style scoped>
 .expanded_panel {
-  background: rgba(0, 0, 0, 0.6);
-  padding: 10px 0;
-  padding-bottom: 40px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px 0;
+    padding-bottom: 40px;
 }
-.camera{
-  height: 60px;
-  line-height: 60px;
+.camera {
+    height: 60px;
+    line-height: 60px;
 }
 .table {
-  display: table;
-  margin: 0 auto;
-  border-collapse: collapse;
+    display: table;
+    margin: 0 auto;
+    border-collapse: collapse;
 }
 .tr {
-  display: table-row;
+    display: table-row;
 }
 .td {
-  display: table-cell;
+    display: table-cell;
 }
 .btn {
-  width: 80px;
-  height: 60px;
-  background: #323232;
-  border: none;
-  outline: none;
-  border-radius: 6px;
-  margin: 4px;
-  cursor: pointer;
-  color: #fafafa;
-  font-size: 30px;
+    width: 80px;
+    height: 60px;
+    background: #323232;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    margin: 4px;
+    cursor: pointer;
+    color: #fafafa;
+    font-size: 30px;
 }
 </style>
-
-

@@ -15,7 +15,7 @@ const TrackballControls = function(object, rect) {
         ZOOM: 1,
         PAN: 2,
         TOUCH_ROTATE: 3,
-        TOUCH_ZOOM_PAN: 4
+        TOUCH_ZOOM_PAN: 4,
     };
 
     this.object = object;
@@ -71,14 +71,13 @@ const TrackballControls = function(object, rect) {
     this.position0 = this.object.position.clone();
     this.up0 = this.object.up.clone();
 
-
     var getMouseOnScreen = (function() {
         var vector = new THREE.Vector2();
 
         return function getMouseOnScreen(pageX, pageY) {
             vector.set(
                 (pageX - _this.screen.left) / _this.screen.width,
-                (pageY - _this.screen.top) / _this.screen.height
+                (pageY - _this.screen.top) / _this.screen.height,
             );
 
             return vector;
@@ -93,7 +92,7 @@ const TrackballControls = function(object, rect) {
                 (pageX - _this.screen.width * 0.5 - _this.screen.left) /
                     (_this.screen.width * 0.5),
                 (_this.screen.height + 2 * (_this.screen.top - pageY)) /
-                    _this.screen.width // screen.width intentional
+                    _this.screen.width, // screen.width intentional
             );
 
             return vector;
@@ -112,11 +111,11 @@ const TrackballControls = function(object, rect) {
             minPolarAngle = 0,
             maxPolarAngle = Math.PI,
             spherical = new THREE.Spherical();
-            
+
         return function rotateOrbit() {
             rotateDelta.set(
                 _moveCurr.x - _movePrev.x,
-                _moveCurr.y - _movePrev.y
+                _moveCurr.y - _movePrev.y,
             );
 
             if (rotateDelta.length()) {
@@ -139,13 +138,13 @@ const TrackballControls = function(object, rect) {
                 // restrict theta to be between desired limits
                 spherical.theta = Math.max(
                     minAzimuthAngle,
-                    Math.min(maxAzimuthAngle, spherical.theta)
+                    Math.min(maxAzimuthAngle, spherical.theta),
                 );
 
                 // restrict phi to be between desired limits
                 spherical.phi = Math.max(
                     minPolarAngle,
-                    Math.min(maxPolarAngle, spherical.phi)
+                    Math.min(maxPolarAngle, spherical.phi),
                 );
 
                 spherical.makeSafe();
@@ -153,7 +152,7 @@ const TrackballControls = function(object, rect) {
                 // restrict radius to be between desired limits
                 spherical.radius = Math.max(
                     minDistance,
-                    Math.min(maxDistance, spherical.radius)
+                    Math.min(maxDistance, spherical.radius),
                 );
 
                 _eye.setFromSpherical(spherical);
@@ -178,7 +177,7 @@ const TrackballControls = function(object, rect) {
             moveDirection.set(
                 _moveCurr.x - _movePrev.x,
                 _moveCurr.y - _movePrev.y,
-                0
+                0,
             );
             angle = moveDirection.length();
 
@@ -197,7 +196,7 @@ const TrackballControls = function(object, rect) {
                 objectSidewaysDirection.setLength(_moveCurr.x - _movePrev.x);
 
                 moveDirection.copy(
-                    objectUpDirection.add(objectSidewaysDirection)
+                    objectUpDirection.add(objectSidewaysDirection),
                 );
 
                 axis.crossVectors(moveDirection, _eye).normalize();
@@ -263,7 +262,7 @@ const TrackballControls = function(object, rect) {
                     .cross(_this.object.up)
                     .setLength(mouseChange.x);
                 pan.add(
-                    objectUp.copy(_this.object.up).setLength(mouseChange.y)
+                    objectUp.copy(_this.object.up).setLength(mouseChange.y),
                 );
 
                 _pos.add(pan);
@@ -275,7 +274,7 @@ const TrackballControls = function(object, rect) {
                     _panStart.add(
                         mouseChange
                             .subVectors(_panEnd, _panStart)
-                            .multiplyScalar(_this.dynamicDampingFactor)
+                            .multiplyScalar(_this.dynamicDampingFactor),
                     );
                 }
             }
@@ -287,7 +286,7 @@ const TrackballControls = function(object, rect) {
             if (_eye.lengthSq() > _this.maxDistance * _this.maxDistance) {
                 _pos.addVectors(
                     _this.target,
-                    _eye.setLength(_this.maxDistance)
+                    _eye.setLength(_this.maxDistance),
                 );
                 _zoomStart.copy(_zoomEnd);
             }
@@ -295,14 +294,13 @@ const TrackballControls = function(object, rect) {
             if (_eye.lengthSq() < _this.minDistance * _this.minDistance) {
                 _pos.addVectors(
                     _this.target,
-                    _eye.setLength(_this.minDistance)
+                    _eye.setLength(_this.minDistance),
                 );
                 _zoomStart.copy(_zoomEnd);
             }
         }
     };
-    this.getCamera = function () {
-
+    this.getCamera = function() {
         _eye.subVectors(_this.object.position, _this.target);
 
         if (!_this.noRotate) {
@@ -341,14 +339,13 @@ const TrackballControls = function(object, rect) {
                 _this.type = "trackball";
                 _this.rotateCamera = _this.rotateTrackball;
                 break;
-		}
-		// _this.update();
+        }
+        // _this.update();
     };
 
     // listeners
 
     this.mousedown = function(event) {
-
         if (_state === STATE.NONE) {
             _state = event.button;
         }
@@ -363,10 +360,9 @@ const TrackballControls = function(object, rect) {
             _panStart.copy(getMouseOnScreen(event.pageX, event.pageY));
             _panEnd.copy(_panStart);
         }
-    }
+    };
 
     this.mousemove = function(event) {
-
         if (_state === STATE.ROTATE && !_this.noRotate) {
             _movePrev.copy(_moveCurr);
 
@@ -376,7 +372,7 @@ const TrackballControls = function(object, rect) {
         } else if (_state === STATE.PAN && !_this.noPan) {
             _panEnd.copy(getMouseOnScreen(event.pageX, event.pageY));
         }
-    }
+    };
 
     this.mouseup = function(event) {
         _state = STATE.NONE;
@@ -399,14 +395,18 @@ const TrackballControls = function(object, rect) {
                 _zoomStart.y -= event.deltaY * 0.00025;
                 break;
         }
-    }
+    };
 
     this.touchstart = function(event) {
-
         switch (event.touches.length) {
             case 1:
                 _state = STATE.TOUCH_ROTATE;
-                _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
+                _moveCurr.copy(
+                    getMouseOnCircle(
+                        event.touches[0].pageX,
+                        event.touches[0].pageY,
+                    ),
+                );
                 _movePrev.copy(_moveCurr);
                 break;
 
@@ -415,7 +415,9 @@ const TrackballControls = function(object, rect) {
                 _state = STATE.TOUCH_ZOOM_PAN;
                 var dx = event.touches[0].pageX - event.touches[1].pageX;
                 var dy = event.touches[0].pageY - event.touches[1].pageY;
-                _touchZoomDistanceEnd = _touchZoomDistanceStart = Math.sqrt(dx * dx + dy * dy);
+                _touchZoomDistanceEnd = _touchZoomDistanceStart = Math.sqrt(
+                    dx * dx + dy * dy,
+                );
 
                 var x = (event.touches[0].pageX + event.touches[1].pageX) / 2;
                 var y = (event.touches[0].pageY + event.touches[1].pageY) / 2;
@@ -428,11 +430,15 @@ const TrackballControls = function(object, rect) {
     };
 
     this.touchmove = function(event) {
-
         switch (event.touches.length) {
             case 1:
                 _movePrev.copy(_moveCurr);
-                _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
+                _moveCurr.copy(
+                    getMouseOnCircle(
+                        event.touches[0].pageX,
+                        event.touches[0].pageY,
+                    ),
+                );
                 break;
 
             default:
@@ -459,14 +465,18 @@ const TrackballControls = function(object, rect) {
 
             case 1:
                 _state = STATE.TOUCH_ROTATE;
-                _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
+                _moveCurr.copy(
+                    getMouseOnCircle(
+                        event.touches[0].pageX,
+                        event.touches[0].pageY,
+                    ),
+                );
                 _movePrev.copy(_moveCurr);
                 break;
         }
 
         // _this.dispatchEvent(endEvent);
     };
-
 
     // this.handleResize();
 

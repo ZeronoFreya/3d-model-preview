@@ -11,12 +11,12 @@ export default {
     computed: {
         rme() {
             return this.$bus.rme;
-        }
+        },
     },
     watch: {
         rme() {
             this.setRME();
-        }
+        },
     },
     created: function() {
         if (this.funMap === undefined) {
@@ -28,15 +28,15 @@ export default {
     },
     methods: {
         setRME() {
-            this.$bus.$emit('toggleLoading', true)
+            this.$bus.$emit("toggleLoading", true);
             this.funMap.get(this.rme)({
                 objects: this.allObjects,
                 renderer: this.renderer,
-                updateLights: this.updateLights
+                updateLights: this.updateLights,
             });
             this.render();
-            this.$bus.$emit('toggleLoading', false)
-        }
-    }
+            this.$bus.$emit("toggleLoading", false);
+        },
+    },
 };
 </script>

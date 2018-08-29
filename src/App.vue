@@ -19,18 +19,18 @@ export default {
     computed: {
         loading() {
             return this.$bus.loading;
-        }
+        },
     },
     methods: {
         onLoad() {
             // this.$store.commit('toggleLoading');
-            this.$bus.$emit('toggleLoading', false)
-        }
+            this.$bus.$emit("toggleLoading", false);
+        },
     },
     components: {
         MenuIndex,
-        ViewLayer
-    }
+        ViewLayer,
+    },
 };
 </script>
 

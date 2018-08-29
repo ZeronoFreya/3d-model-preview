@@ -11,7 +11,7 @@
 export default {
     data() {
         return {
-            value: 0
+            value: 0,
         };
     },
     methods: {
@@ -19,11 +19,11 @@ export default {
             let per = parseInt(this.value) / 100;
             // EventHub.$emit("setapparenthorizon", per);
             this.$store.commit("setRateApparentHorizon", per);
-        }
+        },
     },
     created() {
         this.change();
-    }
+    },
 };
 </script>
 <style lang="scss" scoped>
@@ -76,4 +76,3 @@ export default {
     }
 }
 </style>
-

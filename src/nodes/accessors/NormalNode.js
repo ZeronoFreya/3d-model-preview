@@ -2,113 +2,89 @@
  * @author sunag / http://www.sunag.com.br/
  */
 
-import { TempNode } from '../core/TempNode.js';
-import { NodeLib } from '../core/NodeLib.js';
+import { TempNode } from "../core/TempNode.js";
+import { NodeLib } from "../core/NodeLib.js";
 
-function NormalNode( scope ) {
+function NormalNode(scope) {
+    TempNode.call(this, "v3");
 
-	TempNode.call( this, 'v3' );
-
-	this.scope = scope || NormalNode.LOCAL;
-
+    this.scope = scope || NormalNode.LOCAL;
 }
 
-NormalNode.LOCAL = 'local';
-NormalNode.WORLD = 'world';
-NormalNode.VIEW = 'view';
+NormalNode.LOCAL = "local";
+NormalNode.WORLD = "world";
+NormalNode.VIEW = "view";
 
-NormalNode.prototype = Object.create( TempNode.prototype );
+NormalNode.prototype = Object.create(TempNode.prototype);
 NormalNode.prototype.constructor = NormalNode;
 NormalNode.prototype.nodeType = "Normal";
 
-NormalNode.prototype.isShared = function ( builder ) {
+NormalNode.prototype.isShared = function(builder) {
+    switch (this.scope) {
+        case NormalNode.WORLD:
+            return true;
+    }
 
-	switch ( this.scope ) {
-
-		case NormalNode.WORLD:
-
-			return true;
-
-	}
-
-	return false;
-
+    return false;
 };
 
-NormalNode.prototype.generate = function ( builder, output ) {
+NormalNode.prototype.generate = function(builder, output) {
+    var result;
 
-	var result;
+    switch (this.scope) {
+        case NormalNode.LOCAL:
+            builder.requires.normal = true;
 
-	switch ( this.scope ) {
+            result = "normal";
 
-		case NormalNode.LOCAL:
+            break;
 
-			builder.requires.normal = true;
+        case NormalNode.WORLD:
+            builder.requires.worldNormal = true;
 
-			result = 'normal';
+            result = builder.isShader("vertex")
+                ? "( modelMatrix * vec4( objectNormal, 0.0 ) ).xyz"
+                : "vWNormal";
 
-			break;
+            break;
 
-		case NormalNode.WORLD:
+        case NormalNode.VIEW:
+            result = "vNormal";
 
-			builder.requires.worldNormal = true;
+            break;
+    }
 
-			result = builder.isShader( 'vertex' ) ? '( modelMatrix * vec4( objectNormal, 0.0 ) ).xyz' : 'vWNormal';
-
-			break;
-
-		case NormalNode.VIEW:
-
-			result = 'vNormal';
-
-			break;
-
-	}
-
-	return builder.format( result, this.getType( builder ), output );
-
+    return builder.format(result, this.getType(builder), output);
 };
 
-NormalNode.prototype.copy = function ( source ) {
+NormalNode.prototype.copy = function(source) {
+    TempNode.prototype.copy.call(this, source);
 
-	TempNode.prototype.copy.call( this, source );
-
-	this.scope = source.scope;
-
+    this.scope = source.scope;
 };
 
-NormalNode.prototype.toJSON = function ( meta ) {
+NormalNode.prototype.toJSON = function(meta) {
+    var data = this.getJSONNode(meta);
 
-	var data = this.getJSONNode( meta );
+    if (!data) {
+        data = this.createJSONNode(meta);
 
-	if ( ! data ) {
+        data.scope = this.scope;
+    }
 
-		data = this.createJSONNode( meta );
-
-		data.scope = this.scope;
-
-	}
-
-	return data;
-
+    return data;
 };
 
-NodeLib.addKeyword( 'normal', function () {
+NodeLib.addKeyword("normal", function() {
+    return new NormalNode();
+});
 
-	return new NormalNode();
+NodeLib.addKeyword("worldNormal", function() {
+    return new NormalNode(NormalNode.WORLD);
+});
 
-} );
-
-NodeLib.addKeyword( 'worldNormal', function () {
-
-	return new NormalNode( NormalNode.WORLD );
-
-} );
-
-NodeLib.addKeyword( 'viewNormal', function () {
-
-	return new NormalNode( NormalNode.VIEW );
-
-} );
+NodeLib.addKeyword("viewNormal", function() {
+    return new NormalNode(NormalNode.VIEW);
+});
 
 export { NormalNode };

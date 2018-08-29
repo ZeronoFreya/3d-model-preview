@@ -2,102 +2,102 @@
  * @author sunag / http://www.sunag.com.br/
  */
 
-import { TempNode } from '../core/TempNode.js';
+import { TempNode } from "../core/TempNode.js";
 
-function ReflectNode( scope ) {
+function ReflectNode(scope) {
+    TempNode.call(this, "v3", { unique: true });
 
-	TempNode.call( this, 'v3', { unique: true } );
-
-	this.scope = scope || ReflectNode.CUBE;
-
+    this.scope = scope || ReflectNode.CUBE;
 }
 
-ReflectNode.CUBE = 'cube';
-ReflectNode.SPHERE = 'sphere';
-ReflectNode.VECTOR = 'vector';
+ReflectNode.CUBE = "cube";
+ReflectNode.SPHERE = "sphere";
+ReflectNode.VECTOR = "vector";
 
-ReflectNode.prototype = Object.create( TempNode.prototype );
+ReflectNode.prototype = Object.create(TempNode.prototype);
 ReflectNode.prototype.constructor = ReflectNode;
 ReflectNode.prototype.nodeType = "Reflect";
 
-ReflectNode.prototype.getType = function ( builder ) {
+ReflectNode.prototype.getType = function(builder) {
+    switch (this.scope) {
+        case ReflectNode.SPHERE:
+            return "v2";
+    }
 
-	switch ( this.scope ) {
-
-		case ReflectNode.SPHERE:
-
-			return 'v2';
-
-	}
-
-	return this.type;
-
+    return this.type;
 };
 
-ReflectNode.prototype.generate = function ( builder, output ) {
+ReflectNode.prototype.generate = function(builder, output) {
+    if (builder.isShader("fragment")) {
+        var result;
 
-	if ( builder.isShader( 'fragment' ) ) {
+        switch (this.scope) {
+            case ReflectNode.VECTOR:
+                builder.addNodeCode(
+                    "vec3 reflectVec = inverseTransformDirection( reflect( -normalize( vViewPosition ), normal ), viewMatrix );",
+                );
 
-		var result;
+                result = "reflectVec";
 
-		switch ( this.scope ) {
+                break;
 
-			case ReflectNode.VECTOR:
+            case ReflectNode.CUBE:
+                var reflectVec = new ReflectNode(ReflectNode.VECTOR).build(
+                    builder,
+                    "v3",
+                );
 
-				builder.addNodeCode( 'vec3 reflectVec = inverseTransformDirection( reflect( -normalize( vViewPosition ), normal ), viewMatrix );' );
+                builder.addNodeCode(
+                    "vec3 reflectCubeVec = vec3( -1.0 * " +
+                        reflectVec +
+                        ".x, " +
+                        reflectVec +
+                        ".yz );",
+                );
 
-				result = 'reflectVec';
+                result = "reflectCubeVec";
 
-				break;
+                break;
 
-			case ReflectNode.CUBE:
+            case ReflectNode.SPHERE:
+                var reflectVec = new ReflectNode(ReflectNode.VECTOR).build(
+                    builder,
+                    "v3",
+                );
 
-				var reflectVec = new ReflectNode( ReflectNode.VECTOR ).build( builder, 'v3' );
+                builder.addNodeCode(
+                    "vec2 reflectSphereVec = normalize( ( viewMatrix * vec4( " +
+                        reflectVec +
+                        ", 0.0 ) ).xyz + vec3( 0.0, 0.0, 1.0 ) ).xy * 0.5 + 0.5;",
+                );
 
-				builder.addNodeCode( 'vec3 reflectCubeVec = vec3( -1.0 * ' + reflectVec + '.x, ' + reflectVec + '.yz );' );
+                result = "reflectSphereVec";
 
-				result = 'reflectCubeVec';
+                break;
+        }
 
-				break;
+        return builder.format(result, this.getType(builder), output);
+    } else {
+        console.warn(
+            "THREE.ReflectNode is not compatible with " +
+                builder.shader +
+                " shader.",
+        );
 
-			case ReflectNode.SPHERE:
-
-				var reflectVec = new ReflectNode( ReflectNode.VECTOR ).build( builder, 'v3' );
-
-				builder.addNodeCode( 'vec2 reflectSphereVec = normalize( ( viewMatrix * vec4( ' + reflectVec + ', 0.0 ) ).xyz + vec3( 0.0, 0.0, 1.0 ) ).xy * 0.5 + 0.5;' );
-
-				result = 'reflectSphereVec';
-
-				break;
-
-		}
-
-		return builder.format( result, this.getType( builder ), output );
-
-	} else {
-
-		console.warn( "THREE.ReflectNode is not compatible with " + builder.shader + " shader." );
-
-		return builder.format( 'vec3( 0.0 )', this.type, output );
-
-	}
-
+        return builder.format("vec3( 0.0 )", this.type, output);
+    }
 };
 
-ReflectNode.prototype.toJSON = function ( meta ) {
+ReflectNode.prototype.toJSON = function(meta) {
+    var data = this.getJSONNode(meta);
 
-	var data = this.getJSONNode( meta );
+    if (!data) {
+        data = this.createJSONNode(meta);
 
-	if ( ! data ) {
+        data.scope = this.scope;
+    }
 
-		data = this.createJSONNode( meta );
-
-		data.scope = this.scope;
-
-	}
-
-	return data;
-
+    return data;
 };
 
 export { ReflectNode };

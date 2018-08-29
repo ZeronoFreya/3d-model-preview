@@ -18,7 +18,7 @@ function advToon(args) {
         objects = null,
         renderer = null,
         updateLights = null,
-        effect = null
+        effect = null,
     } = { ...args };
     if (material === undefined) {
         let count = new FloatNode(2.8);
@@ -36,35 +36,35 @@ function advToon(args) {
         let preCelLight = new OperatorNode(
             lightLuminance,
             count,
-            OperatorNode.MUL
+            OperatorNode.MUL,
         );
         let celLight = new Math1Node(preCelLight, Math1Node.CEIL);
         let posCelLight = new OperatorNode(celLight, count, OperatorNode.DIV);
         // LINE
         let posDirection = new Math1Node(
             new PositionNode(PositionNode.VIEW),
-            Math1Node.NORMALIZE
+            Math1Node.NORMALIZE,
         );
         let norDirection = new Math1Node(
             new NormalNode(NormalNode.VIEW),
-            Math1Node.NORMALIZE
+            Math1Node.NORMALIZE,
         );
         let viewZ = new Math2Node(posDirection, norDirection, Math2Node.DOT);
         let lineOutside = new Math1Node(viewZ, Math1Node.ABS);
         let line = new OperatorNode(
             lineOutside,
             new FloatNode(1),
-            OperatorNode.DIV
+            OperatorNode.DIV,
         );
         let lineScaled = new Math3Node(
             line,
             lineSize,
             lineInner,
-            Math3Node.SMOOTHSTEP
+            Math3Node.SMOOTHSTEP,
         );
         let innerContour = new Math1Node(
             new Math1Node(lineScaled, Math1Node.SAT),
-            Math1Node.INVERT
+            Math1Node.INVERT,
         );
 
         // APPLY

@@ -10,7 +10,6 @@ import controls from "./model-controls";
 
 // import EventHub from "./eventHub";
 
-
 // import { advToon } from "../static/material/adv-toon.js";
 // import { envmapsHdr } from "../static/material/envmaps-hdr.js";
 
@@ -23,32 +22,32 @@ export default {
             type: Object,
             default() {
                 return {};
-            }
+            },
         },
         smoothing: {
             type: Boolean,
-            default: false
+            default: false,
         },
         mtlPath: {
-            type: String
+            type: String,
         },
         mtl: {
-            type: String
-        }
+            type: String,
+        },
     },
     created() {},
     data() {
         return {
             objs: this.setObjs(),
             loader: new OBJLoader(),
-            mtlLoader: new MTLLoader()
+            mtlLoader: new MTLLoader(),
         };
     },
     computed: {},
     watch: {
         mtl() {
             this.load();
-        }
+        },
     },
     methods: {
         process(object) {
@@ -72,12 +71,11 @@ export default {
                 if (this.process) {
                     this.process(object);
                 }
-                
+
                 this.addObject(object);
             };
 
             const onProgress = xhr => {
-                
                 this.$emit("on-progress", xhr);
             };
 
@@ -112,7 +110,7 @@ export default {
                         this.loader.load(this.src, onLoad, onProgress, onError);
                     },
                     () => {},
-                    onError
+                    onError,
                 );
             } else {
                 for (let i = 0, il = this.objs.length; i < il; i++) {
@@ -121,11 +119,11 @@ export default {
                         this.objs[i].obj,
                         onLoad,
                         onProgress,
-                        onError
+                        onError,
                     );
                 }
             }
-        }
-    }
+        },
+    },
 };
 </script>

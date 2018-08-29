@@ -10,21 +10,21 @@ export default {
     props: {
         controllable: {
             type: Boolean,
-            default: true
-        }
+            default: true,
+        },
     },
     data() {
         return {
             // 控制器
             controls: null,
             // 鼠标
-            mouse: new Vector2()
+            mouse: new Vector2(),
         };
     },
     computed: {
         ctrlType() {
             return this.$bus.control;
-        }
+        },
     },
     watch: {
         ctrlType() {
@@ -32,7 +32,7 @@ export default {
         },
         controllable() {
             this.updateControls();
-        }
+        },
     },
     methods: {
         updateControls() {
@@ -125,7 +125,7 @@ export default {
 
             this.isAnimate = false;
             this.controls.touchend(event);
-        }
+        },
     },
     mounted() {
         this.updateControls();
@@ -152,6 +152,6 @@ export default {
         this.$el.removeEventListener("touchstart", this.touchstart, false);
         this.$el.removeEventListener("touchend", this.touchend, false);
         this.$el.removeEventListener("touchmove", this.touchmove, false);
-    }
+    },
 };
 </script>

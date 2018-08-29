@@ -10,9 +10,9 @@ const Bus = new Vue({
             camera: {
                 lookat: new Vector3(),
                 pos: new Vector3(),
-                up: new Vector3(0, 1, 0)
+                up: new Vector3(0, 1, 0),
             },
-            rme: null // renderer & material & effect
+            rme: null, // renderer & material & effect
         };
     },
     created() {
@@ -41,7 +41,7 @@ const Bus = new Vue({
         this.$on("setRateApparentHorizon", v => {
             this.rateApparentHorizon = parseFloat(v);
         });
-    }
+    },
 });
 Vue.prototype.$bus = Bus;
 // export default Bus;

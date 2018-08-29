@@ -2,22 +2,27 @@
 <div class="menu" :class="{'menu_expanded': showMenu}">
     <button type="button" class="menu_button" @click.prevent.stop="toggleMenu">Menu</button>
     <i class="lock_menu" @click.prevent.stop="lockMenu">{{isLockMenu ? 'T':'N'}}</i>
-    <ul class="panel">
-        <li class="action_list action_expanded">
-            <MenuStatus @closeMenu="closeMenu"/>
-        </li>
-        <template v-for="(item, index) in items">
-            <MenuList
-                :index="index" :name="item.text"
-                :sec-active="secActive" @toggleSecMenu="toggleSecMenu">
+    <div class="panel">
+        <ElScrollbar tag="ul" wrap-class="panelx" view-class="view-box" :native="false">
+            <li class="action_list action_expanded">
+                <MenuStatus @closeMenu="closeMenu"/>
+            </li>
+            <MenuList v-for="(item, index) in items" :key="index"
+                class="action_list"
+                :class="{'action_expanded': index === secActive}"
+                :name="item.text" :index="index"
+                @toggleSecMenu="toggleSecMenu">
                 <component @closeMenu="closeMenu" :is="item.temp"></component>
             </MenuList>
-        </template>
-        <li class="space"></li>
-    </ul>
+            <li class="space"></li>
+        </ElScrollbar>
+    </div>
+    
 </div>
 </template>
 <script>
+// import CustomScroll from "./custom-scroll";
+import ElScrollbar from "../scrollbar/main";
 import MenuList from "./menu-list";
 import MenuMaterial from "./menu-material";
 import MenuPerspective from "./menu-perspective";
@@ -34,13 +39,13 @@ export default {
             items: [
                 {
                     text: "Material",
-                    temp: MenuMaterial
+                    temp: MenuMaterial,
                 },
                 {
                     text: "Camera",
-                    temp: MenuPerspective
-                }
-            ]
+                    temp: MenuPerspective,
+                },
+            ],
         };
     },
     methods: {
@@ -58,18 +63,21 @@ export default {
         },
         toggleSecMenu(index) {
             this.secActive = this.secActive == index ? NaN : index;
-        }
+        },
     },
     components: {
+        ElScrollbar,
         MenuList,
         MenuStatus,
         // MenuApparentHorizon,
         MenuMaterial,
-        MenuPerspective
-    }
+        MenuPerspective,
+    },
 };
 </script>
 <style lang="scss" scoped>
+@import url("../scrollbar/scroll.scss");
+
 .menu {
     position: absolute;
     bottom: 5px;
@@ -123,13 +131,23 @@ export default {
 .panel {
     width: 100%;
     height: calc(100% - 60px);
-    cursor: pointer;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    overflow-y: auto;
+    overflow: hidden;
 }
 .space {
-    height: 40px;
+    height: 20px;
+}
+
+.action_list {
+    height: 80px;
+    line-height: 1.2;
+    text-align: center;
+    overflow: hidden;
+    font-size: 24px;
+    padding: 20px 0 0 0;
+}
+.panel /deep/ .action_expanded {
+    height: auto;
+    overflow: auto;
 }
 
 @media screen and (orientation: portrait) {
@@ -147,6 +165,3 @@ export default {
     }
 }
 </style>
-
-
-

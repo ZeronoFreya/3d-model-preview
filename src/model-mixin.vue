@@ -23,7 +23,7 @@ import {
     AmbientLight,
     PointLight,
     HemisphereLight,
-    DirectionalLight
+    DirectionalLight,
 } from "three";
 import { getSize, getCenter } from "utils/model";
 // import { OrbitControls } from './controls/OrbitControls'
@@ -46,31 +46,31 @@ const suportWebGL = (() => {
 export default {
     props: {
         src: {
-            type: Array
+            type: Array,
         },
         width: {
-            type: Number
+            type: Number,
         },
         height: {
-            type: Number
+            type: Number,
         },
         position: {
             type: Object,
             default() {
                 return { x: 0, y: 0, z: 0 };
-            }
+            },
         },
         rotation: {
             type: Object,
             default() {
                 return { x: 0, y: 0, z: 0 };
-            }
+            },
         },
         scale: {
             type: Object,
             default() {
                 return { x: 1, y: 1, z: 1 };
-            }
+            },
         },
         lights: {
             type: Array,
@@ -81,42 +81,42 @@ export default {
                         position: { x: 0, y: 1, z: 0 },
                         skyColor: 0xaaaaff,
                         groundColor: 0x806060,
-                        intensity: 0.2
+                        intensity: 0.2,
                     },
                     {
                         type: "DirectionalLight",
                         position: { x: 1, y: 1, z: 1 },
                         color: 0xffffff,
-                        intensity: 0.8
-                    }
+                        intensity: 0.8,
+                    },
                 ];
-            }
+            },
         },
         cameraPosition: {
             type: Object,
             default() {
                 return new Vector3(0, 0, 0);
-            }
+            },
         },
         cameraUp: {
             type: Object,
             default() {
                 return new Vector3(0, 1, 0);
-            }
+            },
         },
         cameraLookAt: {
             type: Object,
             default() {
                 return new Vector3(0, 0, 0);
-            }
+            },
         },
         backgroundColor: {
-            default: 0xffffff
+            default: 0xffffff,
         },
         backgroundAlpha: {
             type: Number,
-            default: 1
-        }
+            default: 1,
+        },
     },
     data() {
         return {
@@ -128,7 +128,7 @@ export default {
                 top: this.offsetTop,
                 left: this.offsetLeft,
                 width: this.width,
-                height: this.height
+                height: this.height,
             },
             // 摄像机
             vertFOV: 45,
@@ -137,7 +137,7 @@ export default {
                 this.vertFOV,
                 this.aspectRatio,
                 0.01,
-                8000
+                8000,
             ),
             raycaster: new Raycaster(),
             // 模型
@@ -147,14 +147,14 @@ export default {
             targetObjs: {
                 objs: null,
                 size: null,
-                distance: 0
+                distance: 0,
             },
             wrapper: new Object3D(),
             // 灯光
             allLights: [],
             // clock: typeof performance === "undefined" ? Date : performance,
             reqId: null, // requestAnimationFrame id
-            isAnimate: false
+            isAnimate: false,
         };
     },
     computed: {},
@@ -167,20 +167,14 @@ export default {
         // }
         // this.aspectRatio = this.rect.width / this.rect.height;
 
-        
-
         this.renderer = new WebGLRenderer({
             antialias: true,
             alpha: true,
-            canvas: this.$refs.canvas
+            canvas: this.$refs.canvas,
         });
         this.renderer.shadowMap.enabled = true;
 
         this.scene.add(this.wrapper);
-
-
-        
-        
 
         this.setRect();
 
@@ -191,7 +185,6 @@ export default {
         this.updateLights(this.lights);
 
         window.addEventListener("resize", this.onResize, false);
-
     },
     beforeDestroy() {
         cancelAnimationFrame(this.reqId);
@@ -207,21 +200,21 @@ export default {
             handler(val) {
                 if (!this.object) return;
                 this.object.rotation.set(val.x, val.y, val.z);
-            }
+            },
         },
         position: {
             deep: true,
             handler(val) {
                 if (!this.object) return;
                 this.object.position.set(val.x, val.y, val.z);
-            }
+            },
         },
         scale: {
             deep: true,
             handler(val) {
                 if (!this.object) return;
                 this.object.scale.set(val.x, val.y, val.z);
-            }
+            },
         },
         size: {
             deep: true,
@@ -229,14 +222,14 @@ export default {
                 this.updateCamera();
                 this.updateRenderer();
                 // this.render();
-            }
+            },
         },
         backgroundAlpha() {
             this.updateRenderer();
         },
         backgroundColor() {
             this.updateRenderer();
-        }
+        },
     },
     methods: {
         setRect() {
@@ -248,7 +241,7 @@ export default {
                 left: box.left + window.pageXOffset - d.clientLeft,
                 top: box.top + window.pageYOffset - d.clientTop,
                 width: this.$el.offsetWidth,
-                height: this.$el.offsetHeight
+                height: this.$el.offsetHeight,
             };
             this.aspectRatio = this.rect.width / this.rect.height;
             this.updateRenderer();
@@ -349,7 +342,7 @@ export default {
                     light = new HemisphereLight(
                         skyColor,
                         groundColor,
-                        intensity
+                        intensity,
                     );
 
                     if (item.position) {
@@ -391,26 +384,23 @@ export default {
                     },
                     err => {
                         this.$emit("on-error", err);
-                    }
+                    },
                 );
             }
         },
         loadStart() {
-            
             this.asyncModelsCount += 1;
         },
         loadEnd() {
-            
             this.asyncModelsCount -= 1;
             if (this.asyncModelsCount == 0) {
                 this.allLoaded();
             }
         },
         allLoaded() {
-            
             this.isLoaded = true;
             const center = getCenter(this.wrapper);
-            
+
             // correction position
             this.wrapper.position.copy(center.negate());
             // this.scene.add( new BoxHelper( this.wrapper ) );
@@ -419,19 +409,18 @@ export default {
             const dis = this.distance(this.wrapper);
 
             // let y = -center.y;
-            const y = this.targetObjs.size.y/2;
+            const y = this.targetObjs.size.y / 2;
             const x = Math.sqrt((Math.pow(dis, 2) - Math.pow(y, 2)) / 2);
             const camera = {
                 lookat: new Vector3(),
                 pos: new Vector3(x, y, x),
-                up: new Vector3(0, 1, 0)
+                up: new Vector3(0, 1, 0),
             };
 
             // const polarGridHelper = new PolarGridHelper( dis, 3, 2, 64, 0xffffff, 0xffffff );
             // polarGridHelper.position.y = 0;
             // polarGridHelper.position.x = 0;
             // this.scene.add( polarGridHelper );
-
 
             this.updateViewPoint(camera);
             // this.toFront()
@@ -453,15 +442,14 @@ export default {
                 return this.targetObjs.distance;
             }
             const size = getSize(target);
-            
-            const maxSize = Math.max(size.x,size.y,size.z);
-            
+
+            const maxSize = Math.max(size.x, size.y, size.z);
+
             // let len =
             //     this.aspectRatio < size.x / size.y ? size.x / 2 : size.y / 2;
-            let len = maxSize/2;
+            let len = maxSize / 2;
 
-            let dis =
-                len / Math.tan(this.vertFOV / 2 * Math.PI / 180);
+            let dis = len / Math.tan(((this.vertFOV / 2) * Math.PI) / 180);
             dis *= 1.2;
 
             this.targetObjs.objs = target;
@@ -497,7 +485,7 @@ export default {
                 }
                 objs.push({
                     obj: pathJoin(this.src.base, obj),
-                    mtl: mtl
+                    mtl: mtl,
                 });
             }
             return objs;
@@ -512,7 +500,7 @@ export default {
             // this.controls.update();
 
             this.renderer.render(this.scene, this.camera);
-        }
-    }
+        },
+    },
 };
 </script>

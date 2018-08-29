@@ -5,7 +5,6 @@ import App from "./App.vue";
 
 import fastclick from "fastclick";
 
-
 import "utils/rem";
 import "./css/base.scss";
 
@@ -15,5 +14,5 @@ new Vue({
     created: () => {
         fastclick.attach(document.body);
     },
-    render: h => h(App)
+    render: h => h(App),
 }).$mount("#app");
