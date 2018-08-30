@@ -1,3 +1,4 @@
+<script>
 // reference https://github.com/noeldelgado/gemini-scrollbar/blob/master/index.js
 import { addResizeListener, removeResizeListener } from "../utils/resize-event";
 import scrollbarWidth from "../utils/scrollbar-width";
@@ -29,9 +30,9 @@ export default {
             sizeHeight: "0",
             moveX: 0,
             moveY: 0,
+            style: "",
         };
     },
-
     computed: {
         wrap() {
             return this.$refs.wrap;
@@ -43,8 +44,8 @@ export default {
         let style = this.wrapStyle;
 
         if (gutter) {
-            const gutterWith = `-${gutter}px`;
-            const gutterStyle = `margin-bottom: ${gutterWith}; margin-right: ${gutterWith};`;
+            const gutterWith = `${gutter}px`;
+            const gutterStyle = `width: calc(100% + ${gutterWith}); height: calc(100% + ${gutterWith});`;
 
             if (Array.isArray(this.wrapStyle)) {
                 style = toObject(this.wrapStyle);
@@ -70,7 +71,6 @@ export default {
                 style={style}
                 onScroll={this.handleScroll}
                 class={[
-                    this.wrapClass,
                     "el-scrollbar__wrap",
                     gutter ? "" : "el-scrollbar__wrap--hidden-default",
                 ]}
@@ -90,22 +90,22 @@ export default {
             nodes = [
                 <div
                     ref="wrap"
-                    class={[this.wrapClass, "el-scrollbar__wrap"]}
+                    class="el-scrollbar__wrap"
                     style={style}
                 >
                     {[view]}
                 </div>,
             ];
         }
-        return h("div", { class: "el-scrollbar" }, nodes);
+        return h("div", { class: [this.wrapClass, "el-scrollbar"] }, nodes);
     },
 
     methods: {
         handleScroll() {
             const wrap = this.wrap;
 
-            this.moveY = (wrap.scrollTop * 100) / wrap.clientHeight;
-            this.moveX = (wrap.scrollLeft * 100) / wrap.clientWidth;
+            this.moveY = wrap.scrollTop * 100 / wrap.clientHeight;
+            this.moveX = wrap.scrollLeft * 100 / wrap.clientWidth;
         },
 
         update() {
@@ -113,8 +113,8 @@ export default {
             const wrap = this.wrap;
             if (!wrap) return;
 
-            heightPercentage = (wrap.clientHeight * 100) / wrap.scrollHeight;
-            widthPercentage = (wrap.clientWidth * 100) / wrap.scrollWidth;
+            heightPercentage = wrap.clientHeight * 100 / wrap.scrollHeight;
+            widthPercentage = wrap.clientWidth * 100 / wrap.scrollWidth;
 
             this.sizeHeight =
                 heightPercentage < 100 ? heightPercentage + "%" : "";
@@ -133,3 +133,67 @@ export default {
         !this.noresize && removeResizeListener(this.$refs.resize, this.update);
     },
 };
+</script>
+<style>
+.el-scrollbar {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.el-scrollbar:active > .el-scrollbar__bar,
+.el-scrollbar:focus > .el-scrollbar__bar,
+.el-scrollbar:hover > .el-scrollbar__bar {
+    opacity: 1;
+    -webkit-transition: opacity 340ms ease-out;
+    transition: opacity 340ms ease-out;
+}
+.el-scrollbar__wrap {
+    overflow: scroll;
+    width: 100%;
+    height: 100%;
+}
+.el-scrollbar__wrap--hidden-default::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+.el-scrollbar__thumb {
+    position: relative;
+    display: block;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+    border-radius: inherit;
+    background-color: rgba(144, 147, 153, 0.3);
+    -webkit-transition: 0.3s background-color;
+    transition: 0.3s background-color;
+}
+.el-scrollbar__thumb:hover {
+    background-color: rgba(144, 147, 153, 0.5);
+}
+.el-scrollbar__bar {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    z-index: 1;
+    border-radius: 4px;
+    opacity: 0;
+    -webkit-transition: opacity 120ms ease-out;
+    transition: opacity 120ms ease-out;
+}
+.el-scrollbar__bar.is-vertical {
+    width: 6px;
+    top: 2px;
+}
+.el-scrollbar__bar.is-vertical > div {
+    width: 100%;
+}
+.el-scrollbar__bar.is-horizontal {
+    height: 6px;
+    left: 2px;
+}
+.el-scrollbar__bar.is-horizontal > div {
+    height: 100%;
+}
+
+</style>

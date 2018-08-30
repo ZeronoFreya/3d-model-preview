@@ -1,16 +1,14 @@
+<script>
 import { on, off } from "../utils/dom";
 import { renderThumbStyle, BAR_MAP } from "./util";
 
-/* istanbul ignore next */
 export default {
     name: "Bar",
-
     props: {
         vertical: Boolean,
         size: String,
         move: Number,
     },
-
     computed: {
         bar() {
             return BAR_MAP[this.vertical ? "vertical" : "horizontal"];
@@ -20,7 +18,6 @@ export default {
             return this.$parent.wrap;
         },
     },
-
     render(h) {
         const { size, move, bar } = this;
 
@@ -38,7 +35,6 @@ export default {
             </div>
         );
     },
-
     methods: {
         clickThumbHandler(e) {
             this.startDrag(e);
@@ -57,11 +53,10 @@ export default {
             );
             const thumbHalf = this.$refs.thumb[this.bar.offset] / 2;
             const thumbPositionPercentage =
-                ((offset - thumbHalf) * 100) / this.$el[this.bar.offset];
+                (offset - thumbHalf) * 100 / this.$el[this.bar.offset];
 
             this.wrap[this.bar.scroll] =
-                (thumbPositionPercentage * this.wrap[this.bar.scrollSize]) /
-                100;
+                thumbPositionPercentage * this.wrap[this.bar.scrollSize] / 100;
         },
 
         startDrag(e) {
@@ -86,12 +81,10 @@ export default {
             const thumbClickPosition =
                 this.$refs.thumb[this.bar.offset] - prevPage;
             const thumbPositionPercentage =
-                ((offset - thumbClickPosition) * 100) /
-                this.$el[this.bar.offset];
+                (offset - thumbClickPosition) * 100 / this.$el[this.bar.offset];
 
             this.wrap[this.bar.scroll] =
-                (thumbPositionPercentage * this.wrap[this.bar.scrollSize]) /
-                100;
+                thumbPositionPercentage * this.wrap[this.bar.scrollSize] / 100;
         },
 
         mouseUpDocumentHandler(e) {
@@ -101,8 +94,10 @@ export default {
             document.onselectstart = null;
         },
     },
-
     destroyed() {
         off(document, "mouseup", this.mouseUpDocumentHandler);
     },
 };
+</script>
+<style lang="scss" scoped>
+</style>

@@ -2,22 +2,19 @@
 <div class="menu" :class="{'menu_expanded': showMenu}">
     <button type="button" class="menu_button" @click.prevent.stop="toggleMenu">Menu</button>
     <i class="lock_menu" @click.prevent.stop="lockMenu">{{isLockMenu ? 'T':'N'}}</i>
-    <div class="panel">
-        <ElScrollbar tag="ul" wrap-class="panelx" view-class="view-box" :native="false">
-            <li class="action_list action_expanded">
-                <MenuStatus @closeMenu="closeMenu"/>
-            </li>
-            <MenuList v-for="(item, index) in items" :key="index"
-                class="action_list"
-                :class="{'action_expanded': index === secActive}"
-                :name="item.text" :index="index"
-                @toggleSecMenu="toggleSecMenu">
-                <component @closeMenu="closeMenu" :is="item.temp"></component>
-            </MenuList>
-            <li class="space"></li>
-        </ElScrollbar>
-    </div>
-    
+    <ElScrollbar tag="ul" wrap-class="panel" view-class="view-box" :native="false" :noresize="false">
+        <li class="action_list action_expanded">
+            <MenuStatus @closeMenu="closeMenu"/>
+        </li>
+        <MenuList v-for="(item, index) in items" :key="index"
+            class="action_list"
+            :class="{'action_expanded': index === secActive}"
+            :name="item.text" :index="index"
+            @toggleSecMenu="toggleSecMenu">
+            <component @closeMenu="closeMenu" :is="item.temp"></component>
+        </MenuList>
+        <li class="space"></li>
+    </ElScrollbar>
 </div>
 </template>
 <script>
@@ -76,7 +73,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import url("../scrollbar/scroll.scss");
 
 .menu {
     position: absolute;

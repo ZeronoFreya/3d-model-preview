@@ -11,7 +11,7 @@ export default {
     },
     computed: {
         facedPlane() {
-            return "";
+            return this.$bus.facedPlane;
         },
         rateApparentHorizon() {
             return 0.0;
@@ -89,7 +89,6 @@ export default {
             let camera = facedPlane(distance);
             this.updateViewPoint(camera);
             this.render();
-            this.$store.commit("setFacedPlane");
         },
         resetViewPoint() {
             this.camera.position.set(

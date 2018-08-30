@@ -55,24 +55,21 @@ export default {
     methods: {
         toFront() {
             // EventHub.$emit('tofront',null);
-            this.setFacedPlane("front");
+            this.$bus.$emit("setFacedPlane", "front");
             this.$emit("closeMenu");
         },
         toRight() {
-            this.setFacedPlane("right");
+            this.$bus.$emit("setFacedPlane", "right");
             this.$emit("closeMenu");
         },
         toTop() {
-            this.setFacedPlane("top");
+            this.$bus.$emit("setFacedPlane", "top");
             this.$emit("closeMenu");
         },
         toBack() {
-            this.setFacedPlane("back");
+            this.$bus.$emit("setFacedPlane", "back");
             this.$emit("closeMenu");
         },
-        // ...mapMutations([
-        //     'setFacedPlane'
-        // ])
     },
 };
 </script>

@@ -19,6 +19,7 @@
     "@vue/cli-service": "^3.0.1",
     "@vue/eslint-config-prettier": "^3.0.1",
     "node-sass": "^4.9.0",
+    "postcss-pxtorem": "^4.0.1",
     "resize-observer-polyfill": "^1.5.0",
     "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.17"
