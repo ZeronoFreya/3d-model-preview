@@ -1,8 +1,9 @@
 <template>
     <div class="contain">
-        <input class="slider" type="range" min="-100" max="100" 
+        <input class="slider" type="range" min="10" max="120" 
           v-model="value"
           @input="change"/>
+        <span>{{value}}</span>
     </div>
 </template>
 <script>
@@ -11,14 +12,12 @@
 export default {
     data() {
         return {
-            value: 0,
+            value: this.$bus.vertFOV,
         };
     },
     methods: {
-        change() {
-            let per = parseInt(this.value) / 100;
-            // EventHub.$emit("setapparenthorizon", per);
-            this.$store.commit("setRateApparentHorizon", per);
+        change() {            
+            this.$bus.$emit("setVertFOV", this.value);
         },
     },
     created() {
@@ -55,7 +54,19 @@ export default {
         background: #edc;
         border: none;
     }
+    &::-webkit-slider-runnable-track {
+        height: 4px;
+        background: #edc;
+        border: none;
+    }
     &::-moz-range-thumb {
+        width: 10px;
+        height: 10px;
+        background: #f22;
+        border: none;
+        border-radius: 50%;
+    }
+    &::-webkit-slider-thumb{
         width: 10px;
         height: 10px;
         background: #f22;

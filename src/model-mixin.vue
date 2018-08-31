@@ -280,10 +280,10 @@ export default {
             renderer.setClearAlpha(this.backgroundAlpha);
         },
         updateCamera() {
-            // if (this.isLoaded) {
+            this.camera.fov = this.vertFOV;
             this.camera.aspect = this.aspectRatio;
             this.camera.updateProjectionMatrix();
-            // }
+            this.render();
         },
         updateLights(_light) {
             _light = _light ? _light : this.lights;

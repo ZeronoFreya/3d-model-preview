@@ -16,6 +16,9 @@ export default {
         rateApparentHorizon() {
             return 0.0;
         },
+        _vertFOV() {
+            return this.$bus.vertFOV;
+        },
     },
     watch: {
         facedPlane() {
@@ -25,6 +28,9 @@ export default {
         },
         rateApparentHorizon() {
             this.setRateApparentHorizon();
+        },
+        _vertFOV() {
+            this.setVertFOV();
         },
     },
     created: function() {
@@ -45,6 +51,34 @@ export default {
                 this.updateViewPoint();
             }
         },
+        setVertFOV() {
+            let args = {
+                lookat:this.$bus.camera.lookat,
+                pos: this.camera.position,
+                fov: this.vertFOV,
+                newfov: this._vertFOV,
+            };
+            let newPos = this.setCameraPostion(args);
+            this.camera.position.copy(newPos);
+            this.vertFOV = this._vertFOV;
+            this.updateCamera();
+        },
+        setCameraPostion: (() => {
+            let _eye = new Vector3();
+            let eyeDirection = new Vector3();
+            let distance, newDistance;
+            return function setCameraPostion(args) {
+                _eye.copy(args.pos).sub(args.lookat);
+                eyeDirection.copy(_eye).normalize();
+                distance = _eye.length();
+                newDistance =
+                    distance *
+                    Math.tan(args.fov / 2 * Math.PI / 180) /
+                    Math.tan(args.newfov / 2 * Math.PI / 180);
+                eyeDirection.setLength(newDistance).add(args.lookat);
+                return eyeDirection;
+            };
+        })(),
         front(distance) {
             return {
                 lookat: new Vector3(0, this.apparentHorizon, 0),

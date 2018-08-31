@@ -24,7 +24,7 @@ import MenuList from "./menu-list";
 import MenuMaterial from "./menu-material";
 import MenuPerspective from "./menu-perspective";
 import MenuStatus from "./menu-status";
-// import MenuApparentHorizon from "./menu-apparent-horizon";
+import MenuCameraFov from "./menu-camera-fov";
 // import {scroller} from 'vue-scrollto/src/scrollTo'
 export default {
     name: "Menu",
@@ -34,6 +34,10 @@ export default {
             isLockMenu: false,
             secActive: NaN,
             items: [
+                {
+                    text: "Camera fov",
+                    temp: MenuCameraFov,
+                },
                 {
                     text: "Material",
                     temp: MenuMaterial,
@@ -66,7 +70,7 @@ export default {
         ElScrollbar,
         MenuList,
         MenuStatus,
-        // MenuApparentHorizon,
+        MenuCameraFov,
         MenuMaterial,
         MenuPerspective,
     },

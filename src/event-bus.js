@@ -12,6 +12,7 @@ const Bus = new Vue({
                 pos: new Vector3(),
                 up: new Vector3(0, 1, 0),
             },
+            vertFOV: 45,
             rme: null, // renderer & material & effect
         };
     },
@@ -29,6 +30,9 @@ const Bus = new Vue({
             }
             this.control = c;
         });
+        this.$on("setCamera", v => {
+            this.camera = v;
+        });
         this.$on("setFacedPlane", (v = "") => {
             this.facedPlane = v;
         });
@@ -40,6 +44,9 @@ const Bus = new Vue({
         });
         this.$on("setRateApparentHorizon", v => {
             this.rateApparentHorizon = parseFloat(v);
+        });
+        this.$on("setVertFOV", v => {
+            this.vertFOV = parseInt(v);
         });
     },
 });

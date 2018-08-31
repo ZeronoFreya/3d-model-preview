@@ -42,6 +42,7 @@ export default {
                 if (this.controls) return;
 
                 this.controls = new TrackballControls(this.camera, this.rect);
+                this.controls.target = this.$bus.camera.lookat;
 
                 this.updateCtrlType();
             } else {
@@ -100,6 +101,7 @@ export default {
             event.stopPropagation();
             this.controls.mousewheel(event);
             const camera = this.controls.getCamera();
+            this.$bus.$emit("setCamera", camera);
             this.updateViewPoint(camera);
             this.render();
         },
@@ -117,7 +119,9 @@ export default {
 
             this.controls.touchmove(event);
             const camera = this.controls.getCamera();
-            return this.updateViewPoint(camera);
+            this.$bus.$emit("setCamera", camera);
+            this.updateViewPoint(camera);
+            this.render();
         },
         touchend(event) {
             event.preventDefault();
