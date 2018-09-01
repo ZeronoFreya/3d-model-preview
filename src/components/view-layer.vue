@@ -13,7 +13,7 @@ export default {
         return {
             bgAlpha: 0,
             src: {
-                base: "/static/models/obj",
+                base: "static/models/obj",
                 mtls: "",
                 objs: ["body.obj", "opai.obj", "chikubi.obj"],
             },

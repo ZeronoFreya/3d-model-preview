@@ -53,8 +53,6 @@ export default {
             }
         },
         updateCtrlType() {
-            console.log(this.ctrlType);
-
             this.controls.switchControls(this.ctrlType);
             this.render();
         },
